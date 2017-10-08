@@ -29,21 +29,23 @@
 h1 {
 	font-size: 2.25em;
 	font-weight: 600;
-  color: white;
-  font-family: 'Stalinist One', cursive;
+  color: #14ce5b;
+  font-family: 'Anton', sans-serif;
+  font-size: 3em;
 }
 h3{
   font-size: 0.8em;
   font-weight: 400;
   color: #14ce5b;
-  font-family: 'Stalinist One', cursive;
+  font-family: 'Anton', sans-serif;
   margin-top: 10%;
+  font-size: 2em;
 }
 h5{
   font-size: 0.8em;
   font-weight: 200;
   color: #21b791;
-  font-family: 'Stalinist One', cursive;
+  font-family: 'Anton', sans-serif;
   margin-top: 5%;
 }
 #logo-img{
