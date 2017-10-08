@@ -24,17 +24,6 @@
     </com.flurgle.camerakit.CameraView>
 
 
-    <TextView
-        android:id="@+id/textViewResult"
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:fadeScrollbars="false"
-        android:maxLines="15"
-        android:scrollbars="vertical"
-        android:gravity="center"
-        android:textColor="@android:color/black"
-        android:layout_weight="1" />
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="80dp"
@@ -43,21 +32,16 @@
         android:gravity="center"
         android:orientation="horizontal">
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/button3"
-            android:text="LED"
-            android:onClick="changeActivity2"
-            android:layout_weight="0.52" />
-
-        <Button
-            android:text="Devices"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="changeActivity"
-            android:id="@+id/button2" />
-
+        <TextView
+            android:id="@+id/textViewResult"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:fadeScrollbars="false"
+            android:maxLines="15"
+            android:scrollbars="vertical"
+            android:gravity="center"
+            android:textColor="@android:color/black"
+            android:layout_weight="1" />
     </LinearLayout>
 
 

@@ -16,6 +16,7 @@
 
 package com.mindorks.tensorflowexample;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -29,10 +30,14 @@ import android.widget.TextView;
 
 import com.flurgle.camerakit.CameraListener;
 import com.flurgle.camerakit.CameraView;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
+
+import app.akexorcist.bluetotohspp.library.BluetoothSPP;
+import app.akexorcist.bluetotohspp.library.BluetoothState;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -52,35 +57,26 @@ public class MainActivity extends AppCompatActivity {
     private ImageView imageViewResult;
     private CameraView cameraView;
     Button devices;
+    BluetoothSPP bt;
     Button led;
-    String biodegrade = "banana,banana peel,apple,coffeepot,teapot,mixing bowl";
+    String biodegrade = "banana,banana peel,apple,coffeepot,teapot,mixing bowl,pomegrenate,fig";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        bt = new BluetoothSPP(this);
+        bt.startService(BluetoothState.DEVICE_OTHER);
+
         cameraView = (CameraView) findViewById(R.id.cameraView);
         imageViewResult = (ImageView) findViewById(R.id.imageViewResult);
         textViewResult = (TextView) findViewById(R.id.textViewResult);
         textViewResult.setMovementMethod(new ScrollingMovementMethod());
-        led = (Button) findViewById(R.id.button3);
-        devices = (Button) findViewById(R.id.button2);
+
         btnToggleCamera = (Button) findViewById(R.id.btnToggleCamera);
         btnDetectObject = (Button) findViewById(R.id.btnDetectObject);
-        led.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent startAbout = new Intent(MainActivity.this, ledControl.class);
-                startActivity(startAbout);
-            }
-        });
-        devices.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent startAbout = new Intent(MainActivity.this, DeviceList.class);
-                startActivity(startAbout);
-            }
-        });
+
+ 
         cameraView.setCameraListener(new CameraListener() {
             @Override
             public void onPictureTaken(byte[] picture) {
@@ -104,6 +100,7 @@ public class MainActivity extends AppCompatActivity {
                     String y[] = x.split("]");
                     String z[] = y[1].split("-");
                     x = z[0];
+                    //x = "";
                     System.out.println(x);
                 }
 
@@ -113,10 +110,19 @@ public class MainActivity extends AppCompatActivity {
                 {
                     x = "Not found." ;
                 }
-                if(biodegrade.contains(x.trim()))
-                    x = x + " \n recyclable";
-                else
-                   x = x + "\n not recyclable";
+                if(biodegrade.contains(x.trim())) {
+                    x = " \n biodegradable";
+                    bt.startService(BluetoothState.DEVICE_OTHER);
+                    //bt.send("1",true);
+                }
+                else {
+                    x = "\n not biodegradable";
+                    bt.startService(BluetoothState.DEVICE_OTHER);
+
+                   // bt.send("0",true);
+
+                }
+
 
                 textViewResult.setText(x);
 
@@ -138,6 +144,21 @@ public class MainActivity extends AppCompatActivity {
         });
 
         initTensorFlowAndLoadModel();
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == BluetoothState.REQUEST_CONNECT_DEVICE) {
+            if(resultCode == Activity.RESULT_OK)
+                bt.connect(data);
+        } else if(requestCode == BluetoothState.REQUEST_ENABLE_BT) {
+            if(resultCode == Activity.RESULT_OK) {
+                bt.setupService();
+                bt.startService(BluetoothState.DEVICE_ANDROID);
+                //setup();
+            } else {
+                // Do something if user doesn't choose any device (Pressed back)
+            }
+        }
     }
 
 
